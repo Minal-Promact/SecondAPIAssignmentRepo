@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SecondAPIAssignmentRepo.Data;
 using SecondAPIAssignmentRepo.Model;
 using SecondAPIAssignmentRepo.Repository.Interface;
@@ -16,12 +17,14 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
 
         public async Task<List<Department>> GetAllDepartments()        
         {
-            return await dbContext.Departments.ToListAsync();
+            List<Department> departments = await dbContext.Departments.Include(p => p.Employees).ToListAsync();           
+            return departments;            
         }
 
         public async Task<Department> GetDepartmentById(Guid departmentId)
         {
-            return await dbContext.Departments.FirstOrDefaultAsync(e => e.Id == departmentId);
+            var departments = dbContext.Departments.Include(p => p.Employees).Single(p => p.Id == departmentId);
+            return departments;            
         }
         public async Task<Department> CheckDepartmentNameExistsInDepartments(string departmentName)
         {

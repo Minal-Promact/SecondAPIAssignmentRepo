@@ -13,7 +13,8 @@
         public const string EnterEmployeeId = "Enter EmployeeId";
         public const string CouldNotFetchEmployeeData = "Could not fetch employee data.";
 
-        public const string GetAllDepartments = "GetAllDepartments";        
+        public const string GetAllDepartments = "GetAllDepartments";
+        public const string GetDepartmentById = "GetDepartmentById";
         public const string AddDepartment = "AddDepartment";
         public const string UpdateDepartment = "UpdateDepartment";        
         public const string DeleteDepartment = "DeleteDepartment";

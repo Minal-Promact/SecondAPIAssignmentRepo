@@ -159,12 +159,9 @@ namespace SecondAPIAssignmentRepo.Controllers
                 var employee = await _iEmployeeRepository.GetEmployeesById(empId);
                 if (employee != null)
                 {
-                    _iEmployeeRepository.DeleteEmployee(employee);
-                    var empDel = await _iEmployeeRepository.GetEmployeesById(empId);
-                    if (empDel == null)
-                    {
-                        return Ok();
-                    }
+                    _iEmployeeRepository.DeleteEmployee(employee);                    
+                     return Ok();
+                    
                 }
                 return NotFound(Constant.TheKeyDoesNotExist);
             }

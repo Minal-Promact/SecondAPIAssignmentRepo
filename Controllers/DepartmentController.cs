@@ -35,6 +35,29 @@ namespace SecondAPIAssignmentRepo.Controllers
                 return StatusCode(Constant.InternalServerError, "Internal server error");
             }
         }
+
+        [HttpGet]
+        [Route(Constant.GetDepartmentById)]
+        public async Task<IActionResult> GetDepartmentById(Guid deptId)
+        {
+            try
+            {
+                if (deptId == Guid.Empty) return BadRequest(Constant.EnterDepartmentId);
+
+                var department = await _iDepartmentRepository.GetDepartmentById(deptId);
+                if (department == null)
+                {
+                    return NotFound(Constant.TheKeyDoesNotExist);
+                }
+
+                return Ok(department);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Constant.InternalServerError, "Internal server error");
+            }
+        }
+
         [HttpPost]
         [Route(Constant.AddDepartment)]
         public async Task<IActionResult> AddDepartment(DepartmentRequest departmentRequest)
@@ -101,11 +124,7 @@ namespace SecondAPIAssignmentRepo.Controllers
                 if (department != null)
                 {
                     _iDepartmentRepository.DeleteDepartment(department);
-                    var deptDel = await _iDepartmentRepository.GetDepartmentById(departmentId);
-                    if (deptDel == null)
-                    {
-                        return Ok();
-                    }
+                     return Ok();                    
                 }
                 return NotFound(Constant.TheKeyDoesNotExist);
             }
