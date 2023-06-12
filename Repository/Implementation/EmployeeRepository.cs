@@ -41,7 +41,7 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
 
             await dbContext.Employees.AddAsync(employee);
             await dbContext.SaveChangesAsync();  
-            var department = dbContext.Departments.Where(a => a.Id == addEmployeeRequest.DepartmentId).FirstOrDefault();
+            var department = dbContext.Departments.Include(a=>a.Employees).Where(a => a.Id == addEmployeeRequest.DepartmentId).FirstOrDefault();
             employee.Department = department;
             return employee;
         }
@@ -54,7 +54,7 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
             emp.Email = updateEmployeeRequest.Email;
             dbContext.Employees.Update(emp);
             await dbContext.SaveChangesAsync();
-            var department = dbContext.Departments.Where(a => a.Id == updateEmployeeRequest.DepartmentId).FirstOrDefault();
+            var department = dbContext.Departments.Include(a => a.Employees).Where(a => a.Id == updateEmployeeRequest.DepartmentId).FirstOrDefault();
             emp.Department = department;
             return emp;
         }
