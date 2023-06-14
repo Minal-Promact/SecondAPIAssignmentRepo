@@ -1,4 +1,6 @@
-﻿namespace SecondAPIAssignmentRepo.Constants
+﻿using Microsoft.AspNetCore.Hosting.Server;
+
+namespace SecondAPIAssignmentRepo.Constants
 {
     public static class Constant
     {
@@ -28,5 +30,6 @@
         public const string TheRecordAlreadyExists = "The Record already exists";
 
         public const int InternalServerError = 500;
+        public const string InternalServerErrorS = "Internal server error";
     }
 }

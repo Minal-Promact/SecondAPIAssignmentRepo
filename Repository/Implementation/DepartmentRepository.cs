@@ -1,53 +1,85 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SecondAPIAssignmentRepo.Data;
+using SecondAPIAssignmentRepo.DTO;
 using SecondAPIAssignmentRepo.Model;
 using SecondAPIAssignmentRepo.Repository.Interface;
+using SecondAPIAssignmentRepo.ToMap;
+using System.Collections.Generic;
 
 namespace SecondAPIAssignmentRepo.Repository.Implementation
 {
     public class DepartmentRepository :IDepartmentRepository
     {
-        private readonly EFDataContext dbContext;        
+        private readonly EFDataContext dbContext;
+        private readonly IMapper _iMapper;
         
-        public DepartmentRepository(EFDataContext dbContext)
+        public DepartmentRepository(EFDataContext dbContext,IMapper mapper)
         {
-            this.dbContext = dbContext;            
+            this.dbContext = dbContext;
+            this._iMapper = mapper;
         }
 
-        public async Task<List<Department>> GetAllDepartments()        
+        public async Task<List<DepartmentReponseDTO>> GetAllDepartments()        
         {
-            List<Department> departments = await dbContext.Departments.Include(p => p.Employees).ToListAsync();           
-            return departments;            
+            List<Department> departments = await dbContext.Departments.Include(p => p.Employees).ToListAsync();
+            List<DepartmentReponseDTO> lstDepartmentReponseDTO = null;  
+            if (departments != null && departments.Count > 0)
+            {
+                lstDepartmentReponseDTO = departments.GetListOfDepartmentResponseDTO(_iMapper);
+            }
+            return lstDepartmentReponseDTO;            
         }
 
-        public async Task<Department> GetDepartmentById(Guid departmentId)
+        public async Task<DepartmentReponseDTO> GetDepartmentById(Guid departmentId)
+        {
+            var department = dbContext.Departments.Include(p => p.Employees).Single(p => p.Id == departmentId);
+            DepartmentReponseDTO departmentReponseDTO = null;
+            if (department != null)
+            {
+                departmentReponseDTO = department.GetDepartmentResponseDTO(_iMapper);
+            }
+            return departmentReponseDTO;                        
+        }
+        public async Task<Department> GetndCheckDepartmentById(Guid departmentId)
         {
             var departments = dbContext.Departments.Include(p => p.Employees).Single(p => p.Id == departmentId);
-            return departments;            
+            return departments;
         }
         public async Task<Department> CheckDepartmentNameExistsInDepartments(string departmentName)
         {
             return await dbContext.Departments.FirstOrDefaultAsync(a => a.DepartmentName == departmentName);
         }
 
-        public async Task<Department> AddDepartment(DepartmentRequest addDepartmentRequest)
+        public async Task<DepartmentReponseDTO> AddDepartment(DepartmentRequest addDepartmentRequest)
         {
-            var department = new Department()
-            {
-                DepartmentName = addDepartmentRequest.DepartmentName
-            };
-            var result = await dbContext.Departments.AddAsync(department);
+            var department = _iMapper.Map<DepartmentRequest, Department>(addDepartmentRequest);
+            
+            await dbContext.Departments.AddAsync(department);
             await dbContext.SaveChangesAsync();
-            return result.Entity;
+
+            DepartmentReponseDTO departmentReponseDTO = null;
+            if (department != null)
+            {
+                departmentReponseDTO = department.GetDepartmentResponseDTO(_iMapper);
+            }
+            return departmentReponseDTO;
         }
 
-        public async Task<Department> UpdateDepartment(Department dept, DepartmentRequest updateDepartmentRequest)
+        public async Task<DepartmentReponseDTO> UpdateDepartment(Department dept, DepartmentRequest updateDepartmentRequest)
         {
             dept.DepartmentName = updateDepartmentRequest.DepartmentName;
-            var result = dbContext.Departments.Update(dept);
+
+            dbContext.Departments.Update(dept);
             await dbContext.SaveChangesAsync();
-            return result.Entity;
+
+            DepartmentReponseDTO departmentReponseDTO = null;
+            if (dept != null)
+            {
+                departmentReponseDTO = dept.GetDepartmentResponseDTO(_iMapper);
+            }
+            return departmentReponseDTO;
         }
 
         public void DeleteDepartment(Department dept)

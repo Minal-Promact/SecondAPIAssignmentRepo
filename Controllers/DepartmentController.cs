@@ -32,7 +32,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -54,7 +54,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -80,7 +80,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -97,7 +97,7 @@ namespace SecondAPIAssignmentRepo.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var department = await _iDepartmentRepository.GetDepartmentById(departmentId);
+                var department = await _iDepartmentRepository.GetndCheckDepartmentById(departmentId);
 
                 if (department != null)
                 {
@@ -108,7 +108,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -120,7 +120,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             {
                 if (departmentId == Guid.Empty) return BadRequest(Constant.EnterDepartmentId);
 
-                var department = await _iDepartmentRepository.GetDepartmentById(departmentId);
+                var department = await _iDepartmentRepository.GetndCheckDepartmentById(departmentId);
                 if (department != null)
                 {
                     _iDepartmentRepository.DeleteDepartment(department);
@@ -130,7 +130,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
