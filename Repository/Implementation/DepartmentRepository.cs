@@ -23,7 +23,7 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
 
         public async Task<List<DepartmentReponseDTO>> GetAllDepartments()        
         {
-            List<Department> departments = await dbContext.Departments.Include(p => p.Employees).ToListAsync();
+            List<Department> departments = await dbContext.Departments.ToListAsync();
             List<DepartmentReponseDTO> lstDepartmentReponseDTO = null;  
             if (departments != null && departments.Count > 0)
             {
