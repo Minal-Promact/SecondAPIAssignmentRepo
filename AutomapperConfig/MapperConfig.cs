@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SecondAPIAssignmentRepo.DTO;
 using SecondAPIAssignmentRepo.Model;
 
 namespace SecondAPIAssignmentRepo.AutomapperConfig
@@ -12,7 +13,8 @@ namespace SecondAPIAssignmentRepo.AutomapperConfig
                 EmployeeRequest>().ReverseMap();
             CreateMap<Department,
                 DepartmentRequest>().ReverseMap();
-            
+            CreateMap<Department,
+                DepartmentReponseDTO>().ReverseMap();
         }
     }
 }

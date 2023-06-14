@@ -36,7 +36,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -63,7 +63,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -97,7 +97,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -123,7 +123,7 @@ namespace SecondAPIAssignmentRepo.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var employee = await _iEmployeeRepository.GetEmployeesById(empId);
+                var employee = await _iEmployeeRepository.GetndCheckEmployeesById(empId);
 
                 if (employee != null)
                 {
@@ -134,7 +134,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
 
@@ -156,7 +156,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             {
                 if (empId == Guid.Empty) return BadRequest(Constant.EnterEmployeeId);
 
-                var employee = await _iEmployeeRepository.GetEmployeesById(empId);
+                var employee = await _iEmployeeRepository.GetndCheckEmployeesById(empId);
                 if (employee != null)
                 {
                     _iEmployeeRepository.DeleteEmployee(employee);                    
@@ -167,7 +167,7 @@ namespace SecondAPIAssignmentRepo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(Constant.InternalServerError, "Internal server error");
+                return StatusCode(Constant.InternalServerError, Constant.InternalServerErrorS);
             }
         }
     }
