@@ -24,22 +24,23 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
         public async Task<List<DepartmentReponseDTO>> GetAllDepartments()        
         {
             List<Department> departments = await dbContext.Departments.ToListAsync();
-            List<DepartmentReponseDTO> lstDepartmentReponseDTO = null;  
-            if (departments != null && departments.Count > 0)
-            {
-                lstDepartmentReponseDTO = departments.GetListOfDepartmentResponseDTO(_iMapper);
-            }
+            List<DepartmentReponseDTO> lstDepartmentReponseDTO = departments.Select(a => new DepartmentReponseDTO() { Id = a.Id, DepartmentName = a.DepartmentName }).ToList();
+            //if (departments != null && departments.Count > 0)
+            //{
+            //    lstDepartmentReponseDTO = departments.GetListOfDepartmentResponseDTO(_iMapper);
+            //}
             return lstDepartmentReponseDTO;            
         }
 
         public async Task<DepartmentReponseDTO> GetDepartmentById(Guid departmentId)
         {
             var department = dbContext.Departments.Include(p => p.Employees).Single(p => p.Id == departmentId);
-            DepartmentReponseDTO departmentReponseDTO = null;
-            if (department != null)
-            {
-                departmentReponseDTO = department.GetDepartmentResponseDTO(_iMapper);
-            }
+            DepartmentReponseDTO departmentReponseDTO = _iMapper.Map<Department, DepartmentReponseDTO>(department);
+            //DepartmentReponseDTO departmentReponseDTO = null;
+            //if (department != null)
+            //{
+            //    departmentReponseDTO = department.GetDepartmentResponseDTO(_iMapper);
+            //}
             return departmentReponseDTO;                        
         }
         public async Task<Department> GetndCheckDepartmentById(Guid departmentId)
@@ -59,11 +60,8 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
             await dbContext.Departments.AddAsync(department);
             await dbContext.SaveChangesAsync();
 
-            DepartmentReponseDTO departmentReponseDTO = null;
-            if (department != null)
-            {
-                departmentReponseDTO = department.GetDepartmentResponseDTO(_iMapper);
-            }
+            DepartmentReponseDTO departmentReponseDTO = _iMapper.Map<Department, DepartmentReponseDTO>(department);
+
             return departmentReponseDTO;
         }
 
@@ -74,11 +72,8 @@ namespace SecondAPIAssignmentRepo.Repository.Implementation
             dbContext.Departments.Update(dept);
             await dbContext.SaveChangesAsync();
 
-            DepartmentReponseDTO departmentReponseDTO = null;
-            if (dept != null)
-            {
-                departmentReponseDTO = dept.GetDepartmentResponseDTO(_iMapper);
-            }
+            DepartmentReponseDTO departmentReponseDTO = _iMapper.Map<Department, DepartmentReponseDTO>(dept);
+
             return departmentReponseDTO;
         }
 
